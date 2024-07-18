@@ -29,7 +29,7 @@ public class Principal {
 			System.out.println(tipo+":");
 			String linha = in.nextLine().trim();
 			if (linha.isEmpty()) {
-				System.out.println("Até a próxima!");
+				System.out.println("AtÃ© a prÃ³xima!");
 				System.exit(0);
 			}
 
@@ -40,7 +40,7 @@ public class Principal {
 				}
 			}
 			catch (Exception e) {
-				System.out.println("Digite uma estação válida. Opções disponíveis: 1 a 20");
+				System.out.println("Digite uma estaÃ§Ã£o vÃ¡lida. OpÃ§Ãµes disponÃ­veis: 1 a 20");
 			}			
 		}
 	}
@@ -95,14 +95,16 @@ public class Principal {
 							
 			System.out.println("Por favor, entre com a sua rota ou pressione ENTER para sair do programa.");
 			int origem = lerEstacao("Origem", in);
-			int destino = lerEstacao("Destino", in);
+			int destino = lerEstacao("Destino", in);			
 			
-			
-			for (Integer estacao : g.caminhoMinimo(origem, destino)) {
-				System.out.print((estacao+1) +" -> ");	
-			}
-			
-			System.out.println("Fim da Rota");
+			ResultadoCaminho resultado = g.caminhoMinimo(origem, destino);
+	        
+	        System.out.println("A rota mais rÃ¡pida Ã©: ");
+	        for (Integer estacao : resultado.getCaminho()) {
+	            System.out.print((estacao + 1) + " -> ");
+	        }
+	        System.out.print("Fim da Rota");
+	        System.out.println("\nCusto total: " + resultado.getCustoTotal());
 			
 		}
 	}

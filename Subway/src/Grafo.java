@@ -11,7 +11,7 @@ public class Grafo {
 	private int vertices[][];
 	
 	//
-	// Construtor para a criaÁ„o do Grafo.
+	// Construtor para a cria√ß√£o do Grafo.
 	//
 	public Grafo(final int numVertices) {
 		vertices = new int[numVertices][numVertices];
@@ -26,21 +26,21 @@ public class Grafo {
 			vertices[noDestino][noOrigem] = peso;
 		}
 		else {
-			throw new InvalidParameterException("O peso do nÛ origem ["+noOrigem+"] para o nÛ destino ["+noDestino+"] n„o pode ser negativo ["+peso+"]");
+			throw new InvalidParameterException("O peso do n√≥ origem ["+noOrigem+"] para o n√≥ destino ["+noDestino+"] n√£o pode ser negativo ["+peso+"]");
 		}
 	}
 	
-	public List<Integer> caminhoMinimo(final int noOrigem, final int noDestino) {
+	public ResultadoCaminho caminhoMinimo(final int noOrigem, final int noDestino) {
 		
 		// Variaveis de controle.
 		int custo[] = new int[vertices.length];
 		int antecessor[] = new int[vertices.length];
 		Set<Integer> naoVisitados = new HashSet<Integer>();
 		
-		// Custo inicial.
+		// Custo inicial do noOrigem √© ZERO.
 		custo[noOrigem] = 0;
 		
-		// Inicializa as variaveis de controle.
+		// Define que todos os outros vertices, diferentes do n√≥ origem tem peso infinito.
 		for (int v = 0; v < vertices.length; v++) {
 			if (v != noOrigem) {
 				custo[v] = Integer.MAX_VALUE; // Simboliza o infinito.
@@ -51,11 +51,11 @@ public class Grafo {
 		
 		while (!naoVisitados.isEmpty()) {
 			
-			// Busca o vertifice n„o visitado mais prÛximo.
+			// Busca o vertice n√£o visitado mais pr√≥ximo.
 			int noMaisProximo = getMaisProximos(custo, naoVisitados);
 			
-			// Retira da lista dos Visitados.
-			naoVisitados.remove(noMaisProximo);		
+			// Retira da lista.
+			naoVisitados.remove(noMaisProximo);
 			
 			for (Integer vizinho : getVizinho(noMaisProximo)) {
 				int custoTotal = custo[noMaisProximo] + getCusto(noMaisProximo, vizinho);
@@ -66,15 +66,17 @@ public class Grafo {
 			}
 			
 			if (noMaisProximo == noDestino) {
-				return caminhoMaisProximo(antecessor, noMaisProximo);
+				 List<Integer> caminho = caminhoMaisProximo(antecessor, noMaisProximo);
+		         return new ResultadoCaminho(caminho, custo[noDestino]);
 			}
+			
 		}
 		
-		return null;
+		return new ResultadoCaminho(Collections.emptyList(), 0);
 	}
 	
 	/**
-	 * Busca o nÛ mais prÛximo a ser explorado.
+	 * Busca o n√≥ mais pr√≥ximo a ser explorado.
 	 * @param listaCusto
 	 * @param naoVisitados
 	 * @return
